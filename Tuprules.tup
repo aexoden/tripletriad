@@ -1,0 +1,4 @@
+CXXFLAGS += -O2 -march=native -ggdb3
+CXXFLAGS += -std=c++11 -pedantic -Wall -Wextra -Wwrite-strings
+
+!cxx = |> g++ $(CXXFLAGS) -c %f -o %o |> %B.o
