@@ -29,15 +29,21 @@ Deck::Deck()
 
 void Deck::add_card(const std::string & name)
 {
-	_active_cards.insert(name);
+	if (_active_levels.count(_cards[name]->level) == 0)
+		_active_cards.insert(name);
 }
 
 std::shared_ptr<Card> Deck::remove_card(const std::string & name)
 {
-	if (_active_cards.erase(name))
+	if (_active_cards.erase(name) || _active_levels.count(_cards[name]->level))
 		return _cards[name];
 	else
 		return nullptr;
+}
+
+void Deck::add_level(int level)
+{
+	_active_levels.insert(level);
 }
 
 void Deck::_initialize_card(const std::shared_ptr<Card> & card)

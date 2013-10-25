@@ -37,6 +37,8 @@ class Deck
 		void add_card(const std::string & name);
 		std::shared_ptr<Card> remove_card(const std::string & name);
 
+		void add_level(int level);
+
 	private:
 		void _initialize_card(const std::shared_ptr<Card> & card);
 		void _initialize_cards();
@@ -44,6 +46,7 @@ class Deck
 		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
 
 		std::unordered_set<std::string> _active_cards;
+		std::unordered_set<int> _active_levels;
 };
 
 #endif
