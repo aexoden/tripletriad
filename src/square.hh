@@ -20,28 +20,28 @@
  * SOFTWARE.
  */
 
-#ifndef TRIPLETRIAD_COMMON_HH
-#define TRIPLETRIAD_COMMON_HH
+#ifndef TRIPLETRIAD_SQUARE_HH
+#define TRIPLETRIAD_SQUARE_HH
 
-enum Direction
-{
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST
-};
+#include <memory>
+#include <vector>
 
-enum Element
+#include "common.hh"
+
+class Square
 {
-	ELEMENT_NONE,
-	ELEMENT_FIRE,
-	ELEMENT_ICE,
-	ELEMENT_THUNDER,
-	ELEMENT_POISON,
-	ELEMENT_EARTH,
-	ELEMENT_WIND,
-	ELEMENT_WATER,
-	ELEMENT_HOLY
+	public:
+		Square(int row, int column);
+
+		const std::shared_ptr<Square> & get_neighbor(Direction direction) const;
+
+		static std::vector<std::vector<std::shared_ptr<Square>>> create_grid(int rows, int columns);
+
+		const int row;
+		const int column;
+
+	private:
+		std::vector<std::shared_ptr<Square>> _neighbors;
 };
 
 #endif

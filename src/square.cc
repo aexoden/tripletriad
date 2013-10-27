@@ -20,28 +20,44 @@
  * SOFTWARE.
  */
 
-#ifndef TRIPLETRIAD_COMMON_HH
-#define TRIPLETRIAD_COMMON_HH
+#include "square.hh"
 
-enum Direction
+Square::Square(int row, int column) :
+	row(row),
+	column(column),
+	_neighbors(4)
+{ }
+
+const std::shared_ptr<Square> & Square::get_neighbor(Direction direction) const
 {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST
-};
+	return this->_neighbors[direction];
+}
 
-enum Element
+std::vector<std::vector<std::shared_ptr<Square>>> Square::create_grid(int rows, int columns)
 {
-	ELEMENT_NONE,
-	ELEMENT_FIRE,
-	ELEMENT_ICE,
-	ELEMENT_THUNDER,
-	ELEMENT_POISON,
-	ELEMENT_EARTH,
-	ELEMENT_WIND,
-	ELEMENT_WATER,
-	ELEMENT_HOLY
-};
+	std::vector<std::vector<std::shared_ptr<Square>>> squares(rows, std::vector<std::shared_ptr<Square>>(columns));
 
-#endif
+	for (int row = 0; row < rows; row++)
+		for (int column = 0; column < columns; column++)
+			squares[row][column] = std::make_shared<Square>(row, column);
+
+	for (int row = 0; row < rows; row++)
+	{
+		for (int column = 0; column < columns; column++)
+		{
+			if (column > 0)
+				squares[row][column]->_neighbors[WEST] = squares[row][column - 1];
+
+			if (row > 0)
+				squares[row][column]->_neighbors[NORTH] = squares[row - 1][column];
+
+			if (column < columns - 1)
+				squares[row][column]->_neighbors[EAST] = squares[row][column + 1];
+
+			if (row < rows - 1)
+				squares[row][column]->_neighbors[SOUTH] = squares[row + 1][column];
+		}
+	}
+
+	return squares;
+}
