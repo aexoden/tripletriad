@@ -46,6 +46,21 @@ void Deck::add_level(int level)
 	_active_levels.insert(level);
 }
 
+std::unordered_set<std::string> Deck::get_valid_card_names()
+{
+	std::unordered_set<std::string> card_names(_active_cards);
+
+	if (!_active_levels.empty())
+	{
+		for (auto card = _cards.begin(); card != _cards.end(); card++)
+		{
+			card_names.insert(card->first);
+		}
+	}
+
+	return card_names;
+}
+
 void Deck::_initialize_card(const std::shared_ptr<Card> & card)
 {
 	_cards.insert(std::make_pair(card->name, card));

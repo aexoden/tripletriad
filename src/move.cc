@@ -20,35 +20,9 @@
  * SOFTWARE.
  */
 
-#ifndef TRIPLETRIAD_DECK_HH
-#define TRIPLETRIAD_DECK_HH
+#include "move.hh"
 
-#include <memory>
-#include <unordered_map>
-#include <unordered_set>
-
-#include "card.hh"
-
-class Deck
-{
-	public:
-		Deck();
-
-		void add_card(const std::string & name);
-		std::shared_ptr<Card> remove_card(const std::string & name);
-
-		void add_level(int level);
-
-		std::unordered_set<std::string> get_valid_card_names();
-
-	private:
-		void _initialize_card(const std::shared_ptr<Card> & card);
-		void _initialize_cards();
-
-		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
-
-		std::unordered_set<std::string> _active_cards;
-		std::unordered_set<int> _active_levels;
-};
-
-#endif
+Move::Move(const std::shared_ptr<Square> & square, const std::string & card_name) :
+	square(square),
+	card_name(card_name)
+{ }

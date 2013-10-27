@@ -44,4 +44,10 @@ enum Element
 	ELEMENT_HOLY
 };
 
+enum Player
+{
+	PLAYER_RED,
+	PLAYER_BLUE
+};
+
 #endif

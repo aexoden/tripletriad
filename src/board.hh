@@ -20,35 +20,39 @@
  * SOFTWARE.
  */
 
-#ifndef TRIPLETRIAD_DECK_HH
-#define TRIPLETRIAD_DECK_HH
+#ifndef TRIPLETRIAD_BOARD_HH
+#define TRIPLETRIAD_BOARD_HH
 
 #include <memory>
-#include <unordered_map>
-#include <unordered_set>
+#include <stack>
+#include <vector>
 
-#include "card.hh"
+#include "common.hh"
+#include "deck.hh"
+#include "move.hh"
+#include "square.hh"
 
-class Deck
+class Board
 {
 	public:
-		Deck();
+		Board(Player first_player, std::unique_ptr<Deck> red_deck, std::unique_ptr<Deck> blue_deck);
 
-		void add_card(const std::string & name);
-		std::shared_ptr<Card> remove_card(const std::string & name);
+		void move(const std::shared_ptr<Move> & move);
+		void unmove();
 
-		void add_level(int level);
-
-		std::unordered_set<std::string> get_valid_card_names();
+		std::unordered_set<std::shared_ptr<Move>> get_valid_moves() const;
 
 	private:
-		void _initialize_card(const std::shared_ptr<Card> & card);
-		void _initialize_cards();
+		void _change_player();
+		void _execute_basic(const std::shared_ptr<Square> & source, Direction direction);
 
-		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
+		Player _current_player;
 
-		std::unordered_set<std::string> _active_cards;
-		std::unordered_set<int> _active_levels;
+		std::vector<std::vector<std::shared_ptr<Square>>> _grid;
+		std::vector<std::unique_ptr<Deck>> _decks;
+
+		std::stack<std::shared_ptr<Move>> _move_history;
+		std::stack<std::shared_ptr<Square>> _flip_history;
 };
 
 #endif

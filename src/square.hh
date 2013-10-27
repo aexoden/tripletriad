@@ -26,6 +26,7 @@
 #include <memory>
 #include <vector>
 
+#include "card.hh"
 #include "common.hh"
 
 class Square
@@ -39,6 +40,9 @@ class Square
 
 		const int row;
 		const int column;
+
+		std::shared_ptr<Card> card;
+		Player owner;
 
 	private:
 		std::vector<std::shared_ptr<Square>> _neighbors;
