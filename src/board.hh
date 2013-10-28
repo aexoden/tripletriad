@@ -40,6 +40,9 @@ class Board
 		void move(const std::shared_ptr<Move> & move);
 		void unmove();
 
+		Player get_current_player() const;
+		int get_score(Player player) const;
+
 		std::unordered_set<std::shared_ptr<Move>> get_valid_moves() const;
 
 	private:

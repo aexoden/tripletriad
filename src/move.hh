@@ -23,6 +23,7 @@
 #ifndef TRIPLETRIAD_MOVE_HH
 #define TRIPLETRIAD_MOVE_HH
 
+#include <iostream>
 #include <memory>
 
 #include "card.hh"
@@ -32,6 +33,8 @@ class Move
 {
 	public:
 		Move(const std::shared_ptr<Square> & square, const std::string & card_name);
+
+		friend std::ostream & operator<<(std::ostream & stream, const Move & move);
 
 		const std::shared_ptr<Square> square;
 		const std::string card_name;

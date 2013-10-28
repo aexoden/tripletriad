@@ -20,19 +20,26 @@
  * SOFTWARE.
  */
 
-#include <sstream>
+#ifndef TRIPLETRIAD_PLAYER_HH
+#define TRIPLETRIAD_PLAYER_HH
 
-#include "move.hh"
+#include <memory>
 
-Move::Move(const std::shared_ptr<Square> & square, const std::string & card_name) :
-	square(square),
-	card_name(card_name)
-{ }
+#include "board.hh"
+#include "common.hh"
 
-std::ostream & operator<<(std::ostream & stream, const Move & move)
+class AutoPlayer
 {
-	std::ostringstream oss;
-	oss << move.card_name << " at " << *(move.square);
+	public:
+		AutoPlayer(const std::shared_ptr<Board> & board);
 
-	return stream << oss.str();
-}
+		std::shared_ptr<Move> get_next_move();
+
+	private:
+		int _search_minimax(Player self, int alpha, int beta, int & positions);
+		int _evaluate(Player player);
+
+		std::shared_ptr<Board> _board;
+};
+
+#endif

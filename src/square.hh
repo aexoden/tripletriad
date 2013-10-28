@@ -38,6 +38,8 @@ class Square
 
 		static std::vector<std::vector<std::shared_ptr<Square>>> create_grid(int rows, int columns);
 
+		friend std::ostream & operator<<(std::ostream & stream, const Square & square);
+
 		const int row;
 		const int column;
 

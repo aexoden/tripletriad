@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 
+#include <sstream>
+
 #include "square.hh"
 
 Square::Square(int row, int column) :
@@ -60,4 +62,12 @@ std::vector<std::vector<std::shared_ptr<Square>>> Square::create_grid(int rows, 
 	}
 
 	return squares;
+}
+
+std::ostream & operator<<(std::ostream & stream, const Square & square)
+{
+	std::ostringstream oss;
+	oss << "(" << square.row << ", " << square.column << ")";
+
+	return stream << oss.str();
 }

@@ -66,21 +66,46 @@ void Board::unmove()
 	move->square->card = nullptr;
 }
 
+Player Board::get_current_player() const
+{
+	return _current_player;
+}
+
+int Board::get_score(Player player) const
+{
+	int score = 0;
+
+	for (auto & row : _grid)
+	{
+		for (auto & square : row)
+		{
+			if (square->card && square->owner == player)
+			{
+				score++;
+			}
+		}
+	}
+
+	return score;
+}
+
 std::unordered_set<std::shared_ptr<Move>> Board::get_valid_moves() const
 {
 	std::unordered_set<std::shared_ptr<Move>> moves;
 	std::unordered_set<std::string> card_names = _decks[_current_player]->get_valid_card_names();
 
-	for (auto iter = card_names.begin(); iter != card_names.end(); iter++)
+	for (size_t row = 0; row < _grid.size(); row++)
 	{
-		for (size_t row = 0; row < _grid.size(); row++)
+		for (size_t column = 0; column < _grid[row].size(); column++)
 		{
-			for (size_t column = 0; column < _grid[row].size(); column++)
-			{
-				std::shared_ptr<Square> square = _grid[row][column];
+			std::shared_ptr<Square> square = _grid[row][column];
 
-				if (!square->card)
+			if (!square->card)
+			{
+				for (auto iter = card_names.begin(); iter != card_names.end(); iter++)
+				{
 					moves.insert(std::make_shared<Move>(square, *iter));
+				}
 			}
 		}
 	}
