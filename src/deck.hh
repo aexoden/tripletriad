@@ -40,15 +40,16 @@ class Deck
 		void add_level(int level);
 
 		std::unordered_set<std::string> get_valid_card_names();
+		int get_remaining_cards();
 
 	private:
 		void _initialize_card(const std::shared_ptr<Card> & card);
 		void _initialize_cards();
 
 		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
+		std::unordered_map<std::string, int> _active_cards;
 
-		std::unordered_set<std::string> _active_cards;
-		std::unordered_set<int> _active_levels;
+		int _remaining_cards;
 };
 
 #endif

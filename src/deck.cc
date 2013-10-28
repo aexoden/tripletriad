@@ -22,43 +22,64 @@
 
 #include "deck.hh"
 
-Deck::Deck()
+Deck::Deck() :
+	_remaining_cards(5)
 {
 	_initialize_cards();
 }
 
 void Deck::add_card(const std::string & name)
 {
-	if (_active_levels.count(_cards[name]->level) == 0)
-		_active_cards.insert(name);
+	if (_active_cards[name] < 5)
+		_active_cards[name]++;
+
+	if (_remaining_cards < 5)
+		_remaining_cards++;
 }
 
 std::shared_ptr<Card> Deck::remove_card(const std::string & name)
 {
-	if (_active_cards.erase(name) || _active_levels.count(_cards[name]->level))
+	if (_active_cards[name] > 0)
+	{
+		_active_cards[name]--;
+		_remaining_cards--;
 		return _cards[name];
+	}
 	else
+	{
 		return nullptr;
+	}
 }
 
 void Deck::add_level(int level)
 {
-	_active_levels.insert(level);
+	for (auto & pair : _cards)
+	{
+		if (pair.second->level == level)
+		{
+			_active_cards[pair.second->name] = 5;
+		}
+	}
 }
 
 std::unordered_set<std::string> Deck::get_valid_card_names()
 {
-	std::unordered_set<std::string> card_names(_active_cards);
+	std::unordered_set<std::string> card_names;
 
-	if (!_active_levels.empty())
+	for (auto & pair : _active_cards)
 	{
-		for (auto card = _cards.begin(); card != _cards.end(); card++)
+		if (pair.second > 0)
 		{
-			card_names.insert(card->first);
+			card_names.insert(pair.first);
 		}
 	}
 
 	return card_names;
+}
+
+int Deck::get_remaining_cards()
+{
+	return _remaining_cards;
 }
 
 void Deck::_initialize_card(const std::shared_ptr<Card> & card)

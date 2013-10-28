@@ -86,7 +86,7 @@ int Board::get_score(Player player) const
 		}
 	}
 
-	return score;
+	return score + _decks[player]->get_remaining_cards();
 }
 
 std::unordered_set<std::shared_ptr<Move>> Board::get_valid_moves() const
