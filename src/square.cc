@@ -67,7 +67,7 @@ std::vector<std::vector<std::shared_ptr<Square>>> Square::create_grid(int rows, 
 std::ostream & operator<<(std::ostream & stream, const Square & square)
 {
 	std::ostringstream oss;
-	oss << "(" << square.row << ", " << square.column << ")";
+	oss << "(" << square.row + 1 << ", " << square.column + 1 << ")";
 
 	return stream << oss.str();
 }
