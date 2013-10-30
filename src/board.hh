@@ -44,6 +44,10 @@ class Board
 		Player get_current_player() const;
 		int get_score(Player player) const;
 
+		bool is_complete() const;
+
+		std::shared_ptr<Move> get_move(int row, int column, const std::string & name);
+
 		std::shared_ptr<Move> suggest_move();
 
 	private:

@@ -28,7 +28,7 @@
 Board::Board(Player first_player) :
 	_current_player(first_player),
 	_unplayed_cards(2),
-	_unplayed_card_counts(2),
+	_unplayed_card_counts(2, 5),
 	_squares(Square::create_squares(3, 3))
 {
 	_initialize_cards();
@@ -84,6 +84,23 @@ int Board::get_score(Player player) const
 	return score;
 }
 
+bool Board::is_complete() const
+{
+	for (auto & square : _squares)
+	{
+		if (!square->card)
+			return false;
+	}
+
+	return true;
+}
+
+std::shared_ptr<Move> Board::get_move(int row, int column, const std::string & name)
+{
+	auto square = _squares[row * 3 + column];
+	return square->moves[_cards[name]];
+}
+
 std::shared_ptr<Move> Board::suggest_move()
 {
 	Player self(_current_player);
@@ -102,8 +119,6 @@ std::shared_ptr<Move> Board::suggest_move()
 				if (pair.second > 0)
 				{
 					std::shared_ptr<Move> move(square->moves.at(pair.first));
-
-					std::cout << "Evaluating " << *move << std::endl;
 
 					_move(move);
 					int score = _search_minimax(self, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), positions);
