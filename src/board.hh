@@ -47,6 +47,8 @@ class Board
 
 		std::vector<std::shared_ptr<Move>> get_valid_moves() const;
 
+		std::shared_ptr<Move> suggest_move();
+
 	private:
 		void _change_player();
 		void _execute_basic(const std::shared_ptr<Square> & source, Direction direction);
@@ -54,6 +56,9 @@ class Board
 		void _initialize_card(const std::shared_ptr<Card> & card);
 		void _initialize_cards();
 		void _initialize_moves();
+
+		int _search_minimax(Player self, int alpha, int beta, int & positions);
+		int _evaluate(Player player);
 
 		Player _current_player;
 

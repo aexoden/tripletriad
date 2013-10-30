@@ -20,6 +20,9 @@
  * SOFTWARE.
  */
 
+#include <iomanip>
+#include <limits>
+
 #include "board.hh"
 
 Board::Board(Player first_player) :
@@ -129,6 +132,52 @@ std::vector<std::shared_ptr<Move>> Board::get_valid_moves() const
 	return moves;
 }
 
+std::shared_ptr<Move> Board::suggest_move()
+{
+	Player self(_current_player);
+
+	int positions = 0;
+	int best_score = std::numeric_limits<int>::min();
+
+	std::shared_ptr<Move> best_move;
+
+	for (auto & square : _squares)
+	{
+		if (!square->card)
+		{
+			for (auto & pair : _unplayed_cards[_current_player])
+			{
+				if (pair.second > 0)
+				{
+					std::shared_ptr<Move> move(square->moves.at(pair.first));
+
+					std::cout << "Evaluating " << *move << std::endl;
+
+					this->move(move);
+					int score = _search_minimax(self, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), positions);
+					unmove();
+
+					if (score > best_score)
+					{
+						best_score = score;
+						best_move = move;
+					}
+
+					positions++;
+				}
+			}
+		}
+	}
+
+	std::cout << std::left << "COMPUTER: ";
+	std::cout << std::setw(11) << "Positions:" << std::setw(12) << positions;
+	std::cout << std::setw(6) << "Move:" << std::setw(30) << *best_move;
+	std::cout << std::setw(10) << "Utility:" << std::setw(10) << best_score;
+	std::cout << std::endl;
+
+	return best_move;
+}
+
 void Board::_change_player()
 {
 	_current_player = _current_player == PLAYER_RED ? PLAYER_BLUE : PLAYER_RED;
@@ -190,4 +239,59 @@ void Board::_initialize_moves()
 			square->moves.insert(std::make_pair(pair.second, std::make_shared<Move>(square, pair.second)));
 		}
 	}
+}
+
+int Board::_search_minimax(Player self, int alpha, int beta, int & positions)
+{
+	bool valid_move = false;
+
+	for (auto & square : _squares)
+	{
+		if (!square->card)
+		{
+			for (auto & pair : _unplayed_cards[_current_player])
+			{
+				if (pair.second > 0)
+				{
+					valid_move = true;
+					std::shared_ptr<Move> move(square->moves.at(pair.first));
+
+					this->move(move);
+					int score = _search_minimax(self, alpha, beta, positions);
+					unmove();
+
+					if (get_current_player() == self)
+					{
+						if (score >= beta)
+							return beta;
+
+						if (score > alpha)
+							alpha = score;
+					}
+					else
+					{
+						if (score <= alpha)
+							return alpha;
+
+						if (score < beta)
+							beta = score;
+					}
+
+					positions++;
+				}
+			}
+		}
+	}
+
+	if (!valid_move)
+		return _evaluate(self);
+	else if (get_current_player() == self)
+		return alpha;
+	else
+		return beta;
+}
+
+int Board::_evaluate(Player player)
+{
+	return get_score(player) - get_score(player == PLAYER_RED ? PLAYER_BLUE : PLAYER_RED);
 }
