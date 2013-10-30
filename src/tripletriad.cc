@@ -90,7 +90,15 @@ int main(int argc, char ** argv)
 					std::istringstream column_stream(tokens[2]);
 					column_stream >> column;
 
-					std::string name = tokens[3];
+					std::string name = "";
+
+					for (size_t i = 3; i < tokens.size(); i++)
+					{
+						if (i > 3)
+							name += " ";
+
+						name += tokens[i];
+					}
 
 					auto move = board->get_move(row - 1, column - 1, name);
 					std::cout << "MOVE: Human places " << *move;
