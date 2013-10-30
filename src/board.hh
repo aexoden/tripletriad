@@ -39,8 +39,7 @@ class Board
 		void activate_card(Player player, const std::string & name);
 		void activate_card_level(Player player, int level);
 
-		void move(const std::shared_ptr<Move> & move);
-		void unmove();
+		bool move(const std::shared_ptr<Move> & move);
 
 		Player get_current_player() const;
 		int get_score(Player player) const;
@@ -48,6 +47,9 @@ class Board
 		std::shared_ptr<Move> suggest_move();
 
 	private:
+		void _move(const std::shared_ptr<Move> & move);
+		void _unmove();
+
 		void _change_player();
 		void _execute_basic(const std::shared_ptr<Square> & source, Direction direction);
 

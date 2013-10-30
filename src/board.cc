@@ -51,43 +51,17 @@ void Board::activate_card_level(Player player, int level)
 	}
 }
 
-void Board::move(const std::shared_ptr<Move> & move)
+bool Board::move(const std::shared_ptr<Move> & move)
 {
-	_move_history.push(move);
-	_flip_history.push(move->square);
+	if (move->square->card)
+		return false;
 
-	_unplayed_cards[_current_player][move->card]--;
-	_unplayed_card_counts[_current_player]--;
+	if (_unplayed_cards[_current_player][move->card] == 0)
+		return false;
 
-	move->square->card = move->card;
-	move->square->owner = _current_player;
+	_move(move);
 
-	_execute_basic(move->square, NORTH);
-	_execute_basic(move->square, SOUTH);
-	_execute_basic(move->square, WEST);
-	_execute_basic(move->square, EAST);
-
-	_change_player();
-}
-
-void Board::unmove()
-{
-	auto move = _move_history.top();
-	_move_history.pop();
-
-	_change_player();
-
-	for (auto square = _flip_history.top(); square != move->square; square = _flip_history.top())
-	{
-		square->owner = square->owner == PLAYER_RED ? PLAYER_BLUE : PLAYER_RED;
-		_flip_history.pop();
-	}
-
-	_flip_history.pop();
-
-	_unplayed_cards[_current_player][move->card]++;
-	_unplayed_card_counts[_current_player]++;
-	move->square->card = nullptr;
+	return true;
 }
 
 Player Board::get_current_player() const
@@ -131,9 +105,9 @@ std::shared_ptr<Move> Board::suggest_move()
 
 					std::cout << "Evaluating " << *move << std::endl;
 
-					this->move(move);
+					_move(move);
 					int score = _search_minimax(self, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), positions);
-					unmove();
+					_unmove();
 
 					if (score > best_score)
 					{
@@ -154,6 +128,45 @@ std::shared_ptr<Move> Board::suggest_move()
 	std::cout << std::endl;
 
 	return best_move;
+}
+
+void Board::_move(const std::shared_ptr<Move> & move)
+{
+	_move_history.push(move);
+	_flip_history.push(move->square);
+
+	_unplayed_cards[_current_player][move->card]--;
+	_unplayed_card_counts[_current_player]--;
+
+	move->square->card = move->card;
+	move->square->owner = _current_player;
+
+	_execute_basic(move->square, NORTH);
+	_execute_basic(move->square, SOUTH);
+	_execute_basic(move->square, WEST);
+	_execute_basic(move->square, EAST);
+
+	_change_player();
+}
+
+void Board::_unmove()
+{
+	auto move = _move_history.top();
+	_move_history.pop();
+
+	_change_player();
+
+	for (auto square = _flip_history.top(); square != move->square; square = _flip_history.top())
+	{
+		square->owner = square->owner == PLAYER_RED ? PLAYER_BLUE : PLAYER_RED;
+		_flip_history.pop();
+	}
+
+	_flip_history.pop();
+
+	_unplayed_cards[_current_player][move->card]++;
+	_unplayed_card_counts[_current_player]++;
+	move->square->card = nullptr;
 }
 
 void Board::_change_player()
@@ -234,9 +247,9 @@ int Board::_search_minimax(Player self, int alpha, int beta, int & positions)
 					valid_move = true;
 					std::shared_ptr<Move> move(square->moves.at(pair.first));
 
-					this->move(move);
+					_move(move);
 					int score = _search_minimax(self, alpha, beta, positions);
-					unmove();
+					_unmove();
 
 					if (get_current_player() == self)
 					{
