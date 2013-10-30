@@ -35,29 +35,29 @@ const std::shared_ptr<Square> & Square::get_neighbor(Direction direction) const
 	return this->_neighbors[direction];
 }
 
-std::vector<std::vector<std::shared_ptr<Square>>> Square::create_grid(int rows, int columns)
+std::vector<std::shared_ptr<Square>> Square::create_squares(int rows, int columns)
 {
-	std::vector<std::vector<std::shared_ptr<Square>>> squares(rows, std::vector<std::shared_ptr<Square>>(columns));
+	std::vector<std::shared_ptr<Square>> squares(rows * columns);
 
 	for (int row = 0; row < rows; row++)
 		for (int column = 0; column < columns; column++)
-			squares[row][column] = std::make_shared<Square>(row, column);
+			squares[row * columns + column] = std::make_shared<Square>(row, column);
 
 	for (int row = 0; row < rows; row++)
 	{
 		for (int column = 0; column < columns; column++)
 		{
 			if (column > 0)
-				squares[row][column]->_neighbors[WEST] = squares[row][column - 1];
+				squares[row * columns + column]->_neighbors[WEST] = squares[row * columns + column - 1];
 
 			if (row > 0)
-				squares[row][column]->_neighbors[NORTH] = squares[row - 1][column];
+				squares[row * columns + column]->_neighbors[NORTH] = squares[(row - 1) * columns + column];
 
 			if (column < columns - 1)
-				squares[row][column]->_neighbors[EAST] = squares[row][column + 1];
+				squares[row * columns + column]->_neighbors[EAST] = squares[row * columns + column + 1];
 
 			if (row < rows - 1)
-				squares[row][column]->_neighbors[SOUTH] = squares[row + 1][column];
+				squares[row * columns + column]->_neighbors[SOUTH] = squares[(row + 1) * columns + column];
 		}
 	}
 

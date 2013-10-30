@@ -24,10 +24,13 @@
 #define TRIPLETRIAD_SQUARE_HH
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "card.hh"
 #include "common.hh"
+
+class Move;
 
 class Square
 {
@@ -36,15 +39,18 @@ class Square
 
 		const std::shared_ptr<Square> & get_neighbor(Direction direction) const;
 
-		static std::vector<std::vector<std::shared_ptr<Square>>> create_grid(int rows, int columns);
+		static std::vector<std::shared_ptr<Square>> create_squares(int rows, int columns);
 
 		friend std::ostream & operator<<(std::ostream & stream, const Square & square);
 
 		const int row;
 		const int column;
 
-		std::shared_ptr<Card> card;
 		Player owner;
+
+		std::shared_ptr<Card> card;
+
+		std::unordered_map<std::shared_ptr<Card>, std::shared_ptr<Move>> moves;
 
 	private:
 		std::vector<std::shared_ptr<Square>> _neighbors;

@@ -22,13 +22,30 @@
 
 #include "board.hh"
 
-Board::Board(Player first_player, std::unique_ptr<Deck> red_deck, std::unique_ptr<Deck> blue_deck) :
+Board::Board(Player first_player) :
 	_current_player(first_player),
-	_grid(Square::create_grid(3, 3)),
-	_decks(2)
+	_unplayed_cards(2),
+	_unplayed_card_counts(2),
+	_squares(Square::create_squares(3, 3))
 {
-	_decks[PLAYER_RED] = std::move(red_deck);
-	_decks[PLAYER_BLUE] = std::move(blue_deck);
+	_initialize_cards();
+	_initialize_moves();
+}
+
+void Board::activate_card(Player player, const std::string & name)
+{
+	_unplayed_cards[player][_cards[name]]++;
+}
+
+void Board::activate_card_level(Player player, int level)
+{
+	for (auto & pair : _cards)
+	{
+		if (pair.second->level == level)
+		{
+			_unplayed_cards[player][pair.second] = 5;
+		}
+	}
 }
 
 void Board::move(const std::shared_ptr<Move> & move)
@@ -36,7 +53,10 @@ void Board::move(const std::shared_ptr<Move> & move)
 	_move_history.push(move);
 	_flip_history.push(move->square);
 
-	move->square->card = _decks[_current_player]->remove_card(move->card_name);
+	_unplayed_cards[_current_player][move->card]--;
+	_unplayed_card_counts[_current_player]--;
+
+	move->square->card = move->card;
 	move->square->owner = _current_player;
 
 	_execute_basic(move->square, NORTH);
@@ -62,7 +82,8 @@ void Board::unmove()
 
 	_flip_history.pop();
 
-	_decks[_current_player]->add_card(move->card_name);
+	_unplayed_cards[_current_player][move->card]++;
+	_unplayed_card_counts[_current_player]++;
 	move->square->card = nullptr;
 }
 
@@ -73,38 +94,33 @@ Player Board::get_current_player() const
 
 int Board::get_score(Player player) const
 {
-	int score = 0;
+	int score = _unplayed_card_counts[player];
 
-	for (auto & row : _grid)
+	for (auto & square : _squares)
 	{
-		for (auto & square : row)
+		if (square->card && square->owner == player)
 		{
-			if (square->card && square->owner == player)
-			{
-				score++;
-			}
+			score++;
 		}
 	}
 
-	return score + _decks[player]->get_remaining_cards();
+	return score;
 }
 
-std::unordered_set<std::shared_ptr<Move>> Board::get_valid_moves() const
+std::vector<std::shared_ptr<Move>> Board::get_valid_moves() const
 {
-	std::unordered_set<std::shared_ptr<Move>> moves;
-	std::unordered_set<std::string> card_names = _decks[_current_player]->get_valid_card_names();
+	std::vector<std::shared_ptr<Move>> moves;
+	moves.reserve(16);
 
-	for (size_t row = 0; row < _grid.size(); row++)
+	for (auto & square : _squares)
 	{
-		for (size_t column = 0; column < _grid[row].size(); column++)
+		if (!square->card)
 		{
-			std::shared_ptr<Square> square = _grid[row][column];
-
-			if (!square->card)
+			for (auto & pair : _unplayed_cards[_current_player])
 			{
-				for (auto iter = card_names.begin(); iter != card_names.end(); iter++)
+				if (pair.second > 0)
 				{
-					moves.insert(std::make_shared<Move>(square, *iter));
+					moves.push_back(square->moves.at(pair.first));
 				}
 			}
 		}
@@ -141,6 +157,37 @@ void Board::_execute_basic(const std::shared_ptr<Square> & source, Direction dir
 		{
 			target->owner = source->owner;
 			_flip_history.push(target);
+		}
+	}
+}
+
+void Board::_initialize_card(const std::shared_ptr<Card> & card)
+{
+	_cards.insert(std::make_pair(card->name, card));
+}
+
+void Board::_initialize_cards()
+{
+	_initialize_card(std::make_shared<Card>(1, "Geezard", 1, 1, 5, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Funguar", 5, 1, 3, 1, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Bite Bug", 1, 3, 5, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Red Bat", 6, 1, 2, 1, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Blobra", 2, 1, 5, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Gayla", 2, 4, 4, 1, ELEMENT_THUNDER));
+	_initialize_card(std::make_shared<Card>(1, "Gesper", 1, 4, 1, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Fastitocalon-F", 3, 2, 1, 5, ELEMENT_EARTH));
+	_initialize_card(std::make_shared<Card>(1, "Blood Soul", 2, 6, 1, 1, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Caterchipillar", 4, 4, 3, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(1, "Cockatrice", 2, 2, 6, 1, ELEMENT_THUNDER));
+}
+
+void Board::_initialize_moves()
+{
+	for (auto & square : _squares)
+	{
+		for (auto & pair : _cards)
+		{
+			square->moves.insert(std::make_pair(pair.second, std::make_shared<Move>(square, pair.second)));
 		}
 	}
 }

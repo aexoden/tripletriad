@@ -28,14 +28,16 @@
 #include <vector>
 
 #include "common.hh"
-#include "deck.hh"
 #include "move.hh"
 #include "square.hh"
 
 class Board
 {
 	public:
-		Board(Player first_player, std::unique_ptr<Deck> red_deck, std::unique_ptr<Deck> blue_deck);
+		Board(Player first_player);
+
+		void activate_card(Player player, const std::string & name);
+		void activate_card_level(Player player, int level);
 
 		void move(const std::shared_ptr<Move> & move);
 		void unmove();
@@ -43,16 +45,23 @@ class Board
 		Player get_current_player() const;
 		int get_score(Player player) const;
 
-		std::unordered_set<std::shared_ptr<Move>> get_valid_moves() const;
+		std::vector<std::shared_ptr<Move>> get_valid_moves() const;
 
 	private:
 		void _change_player();
 		void _execute_basic(const std::shared_ptr<Square> & source, Direction direction);
 
+		void _initialize_card(const std::shared_ptr<Card> & card);
+		void _initialize_cards();
+		void _initialize_moves();
+
 		Player _current_player;
 
-		std::vector<std::vector<std::shared_ptr<Square>>> _grid;
-		std::vector<std::unique_ptr<Deck>> _decks;
+		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
+		std::vector<std::unordered_map<std::shared_ptr<Card>, int>> _unplayed_cards;
+		std::vector<int> _unplayed_card_counts;
+
+		std::vector<std::shared_ptr<Square>> _squares;
 
 		std::stack<std::shared_ptr<Move>> _move_history;
 		std::stack<std::shared_ptr<Square>> _flip_history;
