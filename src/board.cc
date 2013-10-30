@@ -110,28 +110,6 @@ int Board::get_score(Player player) const
 	return score;
 }
 
-std::vector<std::shared_ptr<Move>> Board::get_valid_moves() const
-{
-	std::vector<std::shared_ptr<Move>> moves;
-	moves.reserve(16);
-
-	for (auto & square : _squares)
-	{
-		if (!square->card)
-		{
-			for (auto & pair : _unplayed_cards[_current_player])
-			{
-				if (pair.second > 0)
-				{
-					moves.push_back(square->moves.at(pair.first));
-				}
-			}
-		}
-	}
-
-	return moves;
-}
-
 std::shared_ptr<Move> Board::suggest_move()
 {
 	Player self(_current_player);

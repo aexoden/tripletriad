@@ -45,8 +45,6 @@ class Board
 		Player get_current_player() const;
 		int get_score(Player player) const;
 
-		std::vector<std::shared_ptr<Move>> get_valid_moves() const;
-
 		std::shared_ptr<Move> suggest_move();
 
 	private:
