@@ -234,6 +234,114 @@ void Board::_initialize_cards()
 	_initialize_card(std::make_shared<Card>(1, "Blood Soul", 2, 6, 1, 1, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(1, "Caterchipillar", 4, 4, 3, 2, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(1, "Cockatrice", 2, 2, 6, 1, ELEMENT_THUNDER));
+
+	_initialize_card(std::make_shared<Card>(2, "Grat", 7, 3, 1, 1, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(2, "Buel", 6, 2, 3, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(2, "Mesmerize", 5, 3, 4, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(2, "Glacial Eye", 6, 4, 3, 1, ELEMENT_ICE));
+	_initialize_card(std::make_shared<Card>(2, "Belhelmel", 3, 5, 3, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(2, "Thrustaevis", 5, 2, 5, 3, ELEMENT_WIND));
+	_initialize_card(std::make_shared<Card>(2, "Anacondaur", 5, 3, 5, 1, ELEMENT_POISON));
+	_initialize_card(std::make_shared<Card>(2, "Creeps", 5, 5, 2, 2, ELEMENT_THUNDER));
+	_initialize_card(std::make_shared<Card>(2, "Grendel", 4, 5, 2, 4, ELEMENT_THUNDER));
+	_initialize_card(std::make_shared<Card>(2, "Jelleye", 3, 1, 7, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(2, "Grand Mantis", 5, 5, 3, 2, ELEMENT_NONE));
+
+	_initialize_card(std::make_shared<Card>(3, "Forbidden", 6, 3, 2, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(3, "Armadodo", 6, 1, 6, 3, ELEMENT_EARTH));
+	_initialize_card(std::make_shared<Card>(3, "Tri-Face", 3, 5, 5, 5, ELEMENT_POISON));
+	_initialize_card(std::make_shared<Card>(3, "Fastitocalon", 7, 1, 3, 5, ELEMENT_EARTH));
+	_initialize_card(std::make_shared<Card>(3, "Snow Lion", 7, 5, 3, 1, ELEMENT_ICE));
+	_initialize_card(std::make_shared<Card>(3, "Ochu", 5, 3, 3, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(3, "SAM08G", 5, 2, 4, 6, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(3, "Death Claw", 4, 7, 2, 4, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(3, "Cactuar", 6, 6, 3, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(3, "Tonberry", 3, 4, 4, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(3, "Abyss Worm", 7, 3, 5, 2, ELEMENT_EARTH));
+
+	_initialize_card(std::make_shared<Card>(4, "Turtapod", 2, 6, 7, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "Vysage", 6, 4, 5, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "T-Rexaur", 4, 2, 7, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "Bomb", 2, 6, 3, 7, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(4, "Blitz", 1, 4, 7, 6, ELEMENT_THUNDER));
+	_initialize_card(std::make_shared<Card>(4, "Wendigo", 7, 1, 6, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "Torama", 7, 4, 4, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "Imp", 3, 3, 6, 7, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(4, "Blue Dragon", 6, 7, 3, 2, ELEMENT_POISON));
+	_initialize_card(std::make_shared<Card>(4, "Adamantoise", 4, 5, 6, 5, ELEMENT_EARTH));
+	_initialize_card(std::make_shared<Card>(4, "Hexadragon", 7, 4, 3, 5, ELEMENT_FIRE));
+
+	_initialize_card(std::make_shared<Card>(5, "Iron Giant", 6, 6, 5, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "Behemoth", 3, 5, 7, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "Chimera", 7, 5, 3, 6, ELEMENT_WATER));
+	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(5, "Elastoid", 6, 6, 7, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "GIM47N", 5, 7, 4, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "Malboro", 7, 4, 2, 7, ELEMENT_POISON));
+	_initialize_card(std::make_shared<Card>(5, "Ruby Dragon", 7, 7, 4, 2, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(5, "Elnoyle", 5, 7, 6, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "Tonberry King", 4, 7, 4, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(5, "Wedge, Biggs", 6, 2, 7, 6, ELEMENT_NONE));
+
+	_initialize_card(std::make_shared<Card>(6, "Fujin, Raijin", 2, 8, 4, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Elvoret", 7, 3, 4, 8, ELEMENT_WIND));
+	_initialize_card(std::make_shared<Card>(6, "X-ATM092", 4, 7, 3, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Granaldo", 7, 8, 5, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Gerogero", 1, 8, 3, 8, ELEMENT_POISON));
+	_initialize_card(std::make_shared<Card>(6, "Iguion", 8, 8, 2, 2, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Abadon", 6, 4, 5, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Trauma", 4, 5, 6, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Oilboyle", 1, 4, 8, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Shumi Tribe", 6, 8, 4, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(6, "Krysta", 7, 8, 1, 5, ELEMENT_NONE));
+
+	_initialize_card(std::make_shared<Card>(7, "Propagator", 8, 4, 8, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "Jumbo Cactuar", 8, 4, 4, 8, ELEMENT_NONE));
+	//_initialize_card(std::make_shared<Card>(7, "));
+	_initialize_card(std::make_shared<Card>(7, "Gargantua", 5, 6, 8, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "Mobile Type 8", 8, 7, 3, 6, ELEMENT_NONE));
+	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(7, "Tiamat", 8, 5, 4, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "BGH251F2", 5, 8, 5, 7, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "Red Giant", 6, 4, 7, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "Catoblepas", 1, 7, 7, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(7, "Ultima Weapon", 7, 2, 8, 7, ELEMENT_NONE));
+
+	_initialize_card(std::make_shared<Card>(8, "Chubby Chocobo", 4, 8, 9, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "Angelo", 9, 7, 3, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "Gilgamesh", 3, 9, 6, 7, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "MiniMog", 9, 9, 2, 3, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "Chicobo", 9, 8, 4, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "Quezacotl", 2, 9, 4, 9, ELEMENT_THUNDER));
+	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(8, "Ifrit", 9, 2, 8, 6, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(8, "Siren", 8, 6, 2, 9, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(8, "Sacred", 5, 9, 9, 1, ELEMENT_EARTH));
+	_initialize_card(std::make_shared<Card>(8, "Minotaur", 9, 2, 9, 5, ELEMENT_EARTH));
+
+	_initialize_card(std::make_shared<Card>(9, "Carbuncle", 8, 10, 4, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(9, "Diablos", 5, 8, 3, 10, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(9, "Leviathan", 7, 1, 7, 10, ELEMENT_WATER));
+	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(9, "Pandemona", 10, 7, 7, 1, ELEMENT_WIND));
+	_initialize_card(std::make_shared<Card>(9, "Cerberus", 7, 6, 10, 4, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(9, "Alexander", 9, 4, 2, 10, ELEMENT_HOLY));
+	//_initialize_card(std::make_shared<Card>());
+	//_initialize_card(std::make_shared<Card>());
+	//_initialize_card(std::make_shared<Card>());
+	//_initialize_card(std::make_shared<Card>());
+
+	_initialize_card(std::make_shared<Card>(10, "Ward", 10, 2, 8, 7, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Kiros", 6, 6, 10, 7, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Laguna", 5, 3, 9, 10, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Selphie", 10, 6, 4, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Quistis", 9, 10, 2, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Irvine", 2, 9, 10, 6, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Zell", 8, 10, 6, 5, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Rinoa", 4, 2, 10, 10, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Edea", 10, 3, 3, 10, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Seifer", 6, 10, 4, 9, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(10, "Squall", 10, 6, 9, 4, ELEMENT_NONE));
 }
 
 void Board::_initialize_moves()
