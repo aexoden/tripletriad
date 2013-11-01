@@ -27,10 +27,11 @@
 Square::Square(int row, int column) :
 	row(row),
 	column(column),
+	element(ELEMENT_NONE),
 	_neighbors(4)
 { }
 
-const std::shared_ptr<Square> & Square::get_neighbor(Direction direction) const
+std::shared_ptr<Square> Square::get_neighbor(Direction direction) const
 {
 	return this->_neighbors[direction];
 }

@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
 	{
 		if (started)
 		{
-			std::cout << "SCORE: Red: " << (board->get_score(PLAYER_RED)) << "   Blue: " << (board->get_score(PLAYER_BLUE)) << std::endl;
+			std::cout << "SCORE:    Red: " << (board->get_score(PLAYER_RED)) << "   Blue: " << (board->get_score(PLAYER_BLUE)) << std::endl;
 
 			if (human[board->get_current_player()])
 			{
@@ -101,11 +101,9 @@ int main(int argc, char ** argv)
 					}
 
 					auto move = board->get_move(row - 1, column - 1, name);
-					std::cout << "MOVE: Human places " << *move;
-					if (!board->move(move))
-						std::cout << "... but that's an invalid move, Captain. Try again." << std::endl;
-					else
-						std::cout << std::endl;
+
+					if (!board->move(move, true))
+						std::cout << "Invalid move, Captain. Try again." << std::endl;
 				}
 				else if (tokens[0] == "exit")
 				{
@@ -115,8 +113,8 @@ int main(int argc, char ** argv)
 			else
 			{
 				auto move = board->suggest_move();
-				std::cout << "MOVE: Computer places " << *move << std::endl;
-				board->move(move);
+
+				board->move(move, true);
 			}
 		}
 		else
@@ -130,11 +128,48 @@ int main(int argc, char ** argv)
 			{
 				Player first_player = tokens[1] == "blue" ? PLAYER_BLUE : PLAYER_RED;
 
-				for (size_t i = 2; i < tokens.size(); i++)
-				{ }
+				bool elemental = false;
 
-				board = std::make_shared<Board>(first_player);
+				for (size_t i = 2; i < tokens.size(); i++)
+				{
+					if (tokens[i] == "elemental")
+						elemental = true;
+				}
+
+				board = std::make_shared<Board>(first_player, elemental);
 				started = false;
+			}
+			else if (tokens[0] == "element")
+			{
+				int row;
+				int column;
+
+				std::istringstream row_stream(tokens[1]);
+				row_stream >> row;
+
+				std::istringstream column_stream(tokens[2]);
+				column_stream >> column;
+
+				Element element = ELEMENT_NONE;
+
+				if (tokens[3] == "fire")
+					element = ELEMENT_FIRE;
+				else if (tokens[3] == "ice")
+					element = ELEMENT_ICE;
+				else if (tokens[3] == "thunder")
+					element = ELEMENT_THUNDER;
+				else if (tokens[3] == "poison")
+					element = ELEMENT_POISON;
+				else if (tokens[3] == "earth")
+					element = ELEMENT_EARTH;
+				else if (tokens[3] == "wind")
+					element = ELEMENT_WIND;
+				else if (tokens[3] == "water")
+					element = ELEMENT_WATER;
+				else if (tokens[3] == "holy")
+					element = ELEMENT_HOLY;
+
+				board->set_element(row - 1, column - 1, element);
 			}
 			else if (tokens[0] == "human")
 			{
@@ -156,7 +191,7 @@ int main(int argc, char ** argv)
 				}
 
 				if (!board->activate_card(player, name))
-					std::cout << "WARNING: Invalid card" << std::endl;
+					std::cout << "WARNING:  Invalid card" << std::endl;
 			}
 			else if (tokens[0] == "start")
 			{
@@ -173,7 +208,7 @@ int main(int argc, char ** argv)
 	}
 
 	if (board)
-		std::cout << "SCORE: Red: " << board->get_score(PLAYER_RED) << "   Blue: " << board->get_score(PLAYER_BLUE) << std::endl;
+		std::cout << "SCORE:    Red: " << board->get_score(PLAYER_RED) << "   Blue: " << board->get_score(PLAYER_BLUE) << std::endl;
 
 	return 0;
 }

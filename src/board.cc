@@ -25,8 +25,9 @@
 
 #include "board.hh"
 
-Board::Board(Player first_player) :
+Board::Board(Player first_player, bool elemental) :
 	_current_player(first_player),
+	_elemental(elemental),
 	_unplayed_cards(2),
 	_unplayed_card_counts(2, 5),
 	_squares(Square::create_squares(3, 3))
@@ -59,7 +60,14 @@ void Board::activate_card_level(Player player, int level)
 	}
 }
 
-bool Board::move(const std::shared_ptr<Move> & move)
+void Board::set_element(int row, int column, Element element)
+{
+	auto square = _squares[row * 3 + column];
+
+	square->element = element;
+}
+
+bool Board::move(const std::shared_ptr<Move> & move, bool output)
 {
 	if (move->square->card)
 		return false;
@@ -67,7 +75,19 @@ bool Board::move(const std::shared_ptr<Move> & move)
 	if (_unplayed_cards[_current_player][move->card] == 0)
 		return false;
 
-	_move(move);
+	_move(move, output);
+
+	if (output)
+	{
+		std::cout << "MOVE:     " << (_current_player == PLAYER_RED ? "Red" : "Blue") << " plays " << *move;
+
+		int elemental_adjustment = _get_elemental_adjustment(move->square);
+
+		if (elemental_adjustment == 0)
+			std::cout << std::endl;
+		else
+			std::cout << " (Elemental bonus: " << elemental_adjustment << ")" << std::endl;
+	}
 
 	return true;
 }
@@ -128,7 +148,7 @@ std::shared_ptr<Move> Board::suggest_move()
 				{
 					std::shared_ptr<Move> move(square->moves.at(pair.first));
 
-					_move(move);
+					_move(move, false);
 					int score = _search_minimax(self, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), positions);
 					_unmove();
 
@@ -153,7 +173,7 @@ std::shared_ptr<Move> Board::suggest_move()
 	return best_move;
 }
 
-void Board::_move(const std::shared_ptr<Move> & move)
+void Board::_move(const std::shared_ptr<Move> & move, bool output)
 {
 	_move_history.push(move);
 	_flip_history.push(move->square);
@@ -206,14 +226,29 @@ void Board::_execute_basic(const std::shared_ptr<Square> & source, Direction dir
 
 	if (target->owner != source->owner)
 	{
-		int score = 0;
+		int score = _get_elemental_adjustment(source) - _get_elemental_adjustment(target);
 
 		switch(direction)
 		{
-			case NORTH: score = source->card->top - target->card->bottom; break;
-			case SOUTH: score = source->card->bottom - target->card->top; break;
-			case WEST: score = source->card->left - target->card->right; break;
-			case EAST: score = source->card->right - target->card->left; break;
+			case NORTH:
+				score += source->card->top;
+				score -= target->card->bottom;
+				break;
+
+			case SOUTH:
+				score += source->card->bottom;
+				score -= target->card->top;
+				break;
+
+			case WEST:
+				score += source->card->left;
+				score -= target->card->right;
+				break;
+
+			case EAST:
+				score += source->card->right;
+				score -= target->card->left;
+				break;
 		}
 
 		if (score > 0)
@@ -221,6 +256,21 @@ void Board::_execute_basic(const std::shared_ptr<Square> & source, Direction dir
 			target->owner = source->owner;
 			_flip_history.push(target);
 		}
+	}
+}
+
+int Board::_get_elemental_adjustment(const std::shared_ptr<Square> & square)
+{
+	if (_elemental && square->element != ELEMENT_NONE)
+	{
+		if (square->element == square->card->element)
+			return 1;
+		else
+			return -1;
+	}
+	else
+	{
+		return 0;
 	}
 }
 
@@ -378,7 +428,7 @@ int Board::_search_minimax(Player self, int alpha, int beta, int & positions)
 					valid_move = true;
 					std::shared_ptr<Move> move(square->moves.at(pair.first));
 
-					_move(move);
+					_move(move, false);
 					int score = _search_minimax(self, alpha, beta, positions);
 					_unmove();
 

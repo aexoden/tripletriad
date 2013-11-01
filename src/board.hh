@@ -34,12 +34,14 @@
 class Board
 {
 	public:
-		Board(Player first_player);
+		Board(Player first_player, bool elemental);
 
 		bool activate_card(Player player, const std::string & name);
 		void activate_card_level(Player player, int level);
 
-		bool move(const std::shared_ptr<Move> & move);
+		void set_element(int row, int column, Element element);
+
+		bool move(const std::shared_ptr<Move> & move, bool output);
 
 		Player get_current_player() const;
 		int get_score(Player player) const;
@@ -51,11 +53,13 @@ class Board
 		std::shared_ptr<Move> suggest_move();
 
 	private:
-		void _move(const std::shared_ptr<Move> & move);
+		void _move(const std::shared_ptr<Move> & move, bool output);
 		void _unmove();
 
 		void _change_player();
 		void _execute_basic(const std::shared_ptr<Square> & source, Direction direction);
+
+		int _get_elemental_adjustment(const std::shared_ptr<Square> & square);
 
 		void _initialize_card(const std::shared_ptr<Card> & card);
 		void _initialize_cards();
@@ -65,6 +69,8 @@ class Board
 		int _evaluate(Player player);
 
 		Player _current_player;
+
+		bool _elemental;
 
 		std::unordered_map<std::string, std::shared_ptr<Card>> _cards;
 		std::vector<std::unordered_map<std::shared_ptr<Card>, int>> _unplayed_cards;

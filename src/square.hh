@@ -37,7 +37,7 @@ class Square
 	public:
 		Square(int row, int column);
 
-		const std::shared_ptr<Square> & get_neighbor(Direction direction) const;
+		std::shared_ptr<Square> get_neighbor(Direction direction) const;
 
 		static std::vector<std::shared_ptr<Square>> create_squares(int rows, int columns);
 
@@ -45,6 +45,8 @@ class Square
 
 		const int row;
 		const int column;
+
+		Element element;
 
 		Player owner;
 
