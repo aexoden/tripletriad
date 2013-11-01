@@ -282,7 +282,7 @@ void Board::_initialize_cards()
 	_initialize_card(std::make_shared<Card>(5, "Iron Giant", 6, 6, 5, 5, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(5, "Behemoth", 3, 5, 7, 6, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(5, "Chimera", 7, 5, 3, 6, ELEMENT_WATER));
-	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(5, "PuPu", 3, 2, 1, 10, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(5, "Elastoid", 6, 6, 7, 2, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(5, "GIM47N", 5, 7, 4, 5, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(5, "Malboro", 7, 4, 2, 7, ELEMENT_POISON));
@@ -334,9 +334,9 @@ void Board::_initialize_cards()
 	_initialize_card(std::make_shared<Card>(9, "Pandemona", 10, 7, 7, 1, ELEMENT_WIND));
 	_initialize_card(std::make_shared<Card>(9, "Cerberus", 7, 6, 10, 4, ELEMENT_NONE));
 	_initialize_card(std::make_shared<Card>(9, "Alexander", 9, 4, 2, 10, ELEMENT_HOLY));
-	//_initialize_card(std::make_shared<Card>());
-	//_initialize_card(std::make_shared<Card>());
-	//_initialize_card(std::make_shared<Card>());
+	_initialize_card(std::make_shared<Card>(9, "Phoenix", 7, 7, 10, 2, ELEMENT_FIRE));
+	_initialize_card(std::make_shared<Card>(9, "Bahamut", 10, 2, 6, 8, ELEMENT_NONE));
+	_initialize_card(std::make_shared<Card>(9, "Doomtrain", 3, 10, 10, 1, ELEMENT_POISON));
 	//_initialize_card(std::make_shared<Card>());
 
 	_initialize_card(std::make_shared<Card>(10, "Ward", 10, 2, 8, 7, ELEMENT_NONE));
