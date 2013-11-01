@@ -35,9 +35,17 @@ Board::Board(Player first_player) :
 	_initialize_moves();
 }
 
-void Board::activate_card(Player player, const std::string & name)
+bool Board::activate_card(Player player, const std::string & name)
 {
-	_unplayed_cards[player][_cards[name]]++;
+	if (_cards.count(name))
+	{
+		_unplayed_cards[player][_cards[name]]++;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void Board::activate_card_level(Player player, int level)

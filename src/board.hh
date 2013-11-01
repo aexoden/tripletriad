@@ -36,7 +36,7 @@ class Board
 	public:
 		Board(Player first_player);
 
-		void activate_card(Player player, const std::string & name);
+		bool activate_card(Player player, const std::string & name);
 		void activate_card_level(Player player, int level);
 
 		bool move(const std::shared_ptr<Move> & move);

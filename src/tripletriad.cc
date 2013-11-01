@@ -155,7 +155,8 @@ int main(int argc, char ** argv)
 					name += tokens[i];
 				}
 
-				board->activate_card(player, name);
+				if (!board->activate_card(player, name))
+					std::cout << "WARNING: Invalid card" << std::endl;
 			}
 			else if (tokens[0] == "start")
 			{
